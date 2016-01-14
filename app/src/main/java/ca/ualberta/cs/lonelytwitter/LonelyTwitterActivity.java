@@ -39,9 +39,14 @@ public class LonelyTwitterActivity extends Activity {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
-				saveInFile(text, new Date(System.currentTimeMillis()));
+				Tweet twt = new NormalTweet(text);
+				try {
+					twt.setMessage("message is set, wow!");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				saveInFile(twt.message, twt.date);
 				finish();
-
 			}
 		});
 	}
@@ -77,11 +82,11 @@ public class LonelyTwitterActivity extends Activity {
 		return tweets.toArray(new String[tweets.size()]);
 	}
 	
-	private void saveInFile(String text, Date date) {
+	private void saveInFile(String message, Date date) {
 		try {
 			FileOutputStream fos = openFileOutput(FILENAME,
 					Context.MODE_APPEND);
-			fos.write(new String(date.toString() + " | " + text)
+			fos.write((date.toString() + " | " + message)
 					.getBytes());
 			fos.close();
 		} catch (FileNotFoundException e) {
