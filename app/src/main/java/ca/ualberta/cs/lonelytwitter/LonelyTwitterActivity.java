@@ -1,99 +1,114 @@
 package ca.ualberta.cs.lonelytwitter;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
-	private EditText bodyText;
-	private ListView oldTweetsList;
-	
-	/** Called when the activity is first created. */
+
+	// UI Elements
+	private EditText mBodyText;
+	private ListView mTweetList;
+	private Button mSaveButton;
+	private Button mClearButton;
+
+	// List and Adapter
+	private ArrayList<Tweet> mTweets;
+	private ArrayAdapter<Tweet> mTweetAdapter;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.main);
 
-		bodyText = (EditText) findViewById(R.id.body);
-		Button saveButton = (Button) findViewById(R.id.save);
-		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
+		mBodyText = (EditText) findViewById(R.id.body);
+		mSaveButton = (Button) findViewById(R.id.save);
+		mClearButton = (Button) findViewById(R.id.clear);
+		mTweetList = (ListView) findViewById(R.id.oldTweetsList);
 
-		saveButton.setOnClickListener(new View.OnClickListener() {
+		mSaveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				setResult(RESULT_OK);
-				String text = bodyText.getText().toString();
+				String text = mBodyText.getText().toString();
 				Tweet twt = new NormalTweet(text);
-				try {
-					twt.setMessage("message is set, wow!");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				saveInFile(twt.message, twt.date);
-				finish();
+				mTweets.add(twt);
+				mTweetAdapter.notifyDataSetChanged();
+				saveInFile();
+			}
+		});
+
+		mClearButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				mTweets.clear();
+				mTweetAdapter.notifyDataSetChanged();
+				saveInFile();
 			}
 		});
 	}
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
-		String[] tweets = loadFromFile();
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.list_item, tweets);
-		oldTweetsList.setAdapter(adapter);
+
+		loadFromFile();
+		mTweetAdapter = new ArrayAdapter<Tweet>(this, R.layout.list_item, mTweets);
+		mTweetList.setAdapter(mTweetAdapter);
 	}
 
-	private String[] loadFromFile() {
-		ArrayList<String> tweets = new ArrayList<String>();
+	private void loadFromFile() {
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
 			BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-			String line = in.readLine();
-			while (line != null) {
-				tweets.add(line);
-				line = in.readLine();
-			}
+
+			Gson gson = new Gson();
+			Type listType = new TypeToken<ArrayList<NormalTweet>>() {}.getType();
+			mTweets = gson.fromJson(in, listType);
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			mTweets = new ArrayList<Tweet>();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException();
 		}
-		return tweets.toArray(new String[tweets.size()]);
 	}
-	
-	private void saveInFile(String message, Date date) {
+
+	private void saveInFile() {
 		try {
-			FileOutputStream fos = openFileOutput(FILENAME,
-					Context.MODE_APPEND);
-			fos.write((date.toString() + " | " + message)
-					.getBytes());
+			FileOutputStream fos = openFileOutput(FILENAME, 0);
+
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+			Gson gson = new Gson();
+			gson.toJson(mTweets, out);
+			out.flush();
+
 			fos.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
