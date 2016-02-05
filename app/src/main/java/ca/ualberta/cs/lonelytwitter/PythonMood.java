@@ -3,7 +3,7 @@ package ca.ualberta.cs.lonelytwitter;
 import java.util.Date;
 
 /**
- * Created by arhoskin on 1/14/16.
+ * Similar to javamood, python mood is a state a tweet can be associated with
  */
 public class PythonMood extends Mood {
     public PythonMood(Date date) {

@@ -11,6 +11,11 @@ public abstract class Tweet {
     protected Date date;
     protected List<Mood> moods;
 
+    /**
+     * Tweet constructor
+     * @param c, tweet contents
+     * @param d, date of tweet creation
+     * */
     public Tweet(String c, Date d) {
         this.message = c;
         this.date = d;
@@ -37,12 +42,22 @@ public abstract class Tweet {
         this.moods = moods;
     }
 
+    /**
+     * set a new message for a tweet
+     * @param message, the message to set
+     * @throws Exception when oversized
+     * */
     public void setMessage(String message) throws Exception {
         if (overSized(message)) {
             throw new Exception();
         }
     }
 
+    /**
+     * checks if a given tweet is oversized
+     * @param message, to check
+     * @return boolean
+     * */
     private boolean overSized(String message) {
         if (message.length() > 140) return true;
         return true;

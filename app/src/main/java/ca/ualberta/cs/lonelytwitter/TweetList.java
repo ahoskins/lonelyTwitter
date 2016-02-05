@@ -8,6 +8,11 @@ import java.util.ArrayList;
 public class TweetList {
     private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 
+    /**
+     * Add a tweet to the list of tweets
+     * @param tweet to add
+     * @return nothing
+     * */
     public void add(Tweet tweet) {
         if (tweets.contains(tweet)) {
             throw new IllegalArgumentException();
@@ -15,6 +20,11 @@ public class TweetList {
         tweets.add(tweet);
     }
 
+    /**
+     * Check if list has a tweet
+     * @param tweet to check
+     * @return nothing
+     * */
     public Boolean hasTweet(Tweet tweet) {
         return tweets.contains(tweet);
     }

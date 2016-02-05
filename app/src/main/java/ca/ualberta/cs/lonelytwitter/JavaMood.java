@@ -3,7 +3,7 @@ package ca.ualberta.cs.lonelytwitter;
 import java.util.Date;
 
 /**
- * Created by arhoskin on 1/14/16.
+ * A tweet can have a mood and this class represents one of those
  */
 public class JavaMood extends Mood {
     public JavaMood(Date date) {

@@ -25,6 +25,10 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/***
+ * main activity for app
+ * load view and read from file and write to file
+ */
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
@@ -39,6 +43,9 @@ public class LonelyTwitterActivity extends Activity {
 	private ArrayList<Tweet> mTweets;
 	private ArrayAdapter<Tweet> mTweetAdapter;
 
+	/**
+	 * Called on creation of activity
+	 * */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,6 +78,9 @@ public class LonelyTwitterActivity extends Activity {
 		});
 	}
 
+	/**
+	 * called on activity fully into view
+	 * */
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -80,6 +90,9 @@ public class LonelyTwitterActivity extends Activity {
 		mTweetList.setAdapter(mTweetAdapter);
 	}
 
+	/**
+	 * load the contents of the file
+	 * */
 	private void loadFromFile() {
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
@@ -96,6 +109,9 @@ public class LonelyTwitterActivity extends Activity {
 		}
 	}
 
+	/**
+	 * save in the file
+	 * */
 	private void saveInFile() {
 		try {
 			FileOutputStream fos = openFileOutput(FILENAME, 0);

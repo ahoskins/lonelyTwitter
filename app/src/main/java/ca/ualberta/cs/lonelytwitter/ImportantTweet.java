@@ -1,7 +1,7 @@
 package ca.ualberta.cs.lonelytwitter;
 
 /**
- * Created by arhoskin on 1/14/16.
+ * Class representing a tweet of special kind
  */
 public class ImportantTweet extends Tweet implements Tweetable {
 

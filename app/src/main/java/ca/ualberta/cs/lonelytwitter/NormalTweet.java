@@ -1,7 +1,7 @@
 package ca.ualberta.cs.lonelytwitter;
 
 /**
- * Created by arhoskin on 1/14/16.
+ * A normal kind of tweet
  */
 public class NormalTweet extends Tweet {
     public NormalTweet(String message) {
