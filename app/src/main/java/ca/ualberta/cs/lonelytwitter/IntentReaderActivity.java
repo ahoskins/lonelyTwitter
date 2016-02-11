@@ -27,11 +27,17 @@ public class IntentReaderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intent_reader);
 
-        //
-        //
+        Intent i = getIntent();
+        mode = i.getIntExtra(MODE_OF_TRANSFORM_KEY, NORMAL);
+        text = i.getStringExtra(TEXT_TO_TRANSFORM_KEY) != null ? i.getStringExtra(TEXT_TO_TRANSFORM_KEY) : "default";
 
-        //
-        //
+        if (mode == DOUBLE) {
+            text = transformText(text);
+        } else if (mode == REVERSE) {
+            text = reverse(text);
+        }
+
+        ((TextView) findViewById(R.id.intentText)).setText(text);
     }
 
     public String transformText(String str) {
@@ -49,5 +55,9 @@ public class IntentReaderActivity extends Activity {
             default:
                 return str;
         }
+    }
+
+    public String reverse(String str) {
+        return new StringBuilder(str).reverse().toString();
     }
 }

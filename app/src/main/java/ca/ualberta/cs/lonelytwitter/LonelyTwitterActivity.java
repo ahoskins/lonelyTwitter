@@ -69,7 +69,10 @@ public class LonelyTwitterActivity extends Activity {
 
 				//
 				//
-
+				Intent i = new Intent(LonelyTwitterActivity.this, IntentReaderActivity.class);
+                i.putExtra(IntentReaderActivity.TEXT_TO_TRANSFORM_KEY, "message 1");
+                i.putExtra(IntentReaderActivity.MODE_OF_TRANSFORM_KEY, IntentReaderActivity.NORMAL);
+                startActivity(i);
 				//
 				//
 			}
