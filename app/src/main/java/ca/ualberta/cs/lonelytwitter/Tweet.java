@@ -8,6 +8,7 @@ import java.util.Date;
 public abstract class Tweet {
     protected Date date;
     protected String message;
+    protected String id;
 
     public Tweet(Date date, String message) {
         this.date = date;
@@ -28,6 +29,8 @@ public abstract class Tweet {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public void setId(String id) { this.id = id; }
 
     public String getMessage() {
         return this.message;
